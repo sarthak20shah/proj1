@@ -10,12 +10,23 @@ import {
   Typography,
 } from "antd";
 import "./TableCom.css";
+import Item from "antd/lib/list/Item";
 
 interface Item {
   key: string;
   name: string;
   age: number;
+  address: { street: string };
+
+  id: number;
+  email: string;
+}
+
+interface UserData {
+  name: string;
   address: string;
+  id: number | string;
+  email: string;
 }
 
 let originData: Item[] = [];
@@ -71,6 +82,12 @@ const EditableCell: React.FC<EditableCellProps> = ({
     </td>
   );
 };
+const defaultUserData = {
+  id: "",
+  email: "",
+  name: "",
+  address: { street: "" },
+};
 
 const EditableTable = () => {
   const [form] = Form.useForm();
@@ -78,10 +95,12 @@ const EditableTable = () => {
   const [editingKey, setEditingKey] = useState("");
   const [count, setCount] = useState(0);
   const [isModalVisible, setIsModalVisible] = useState(false);
-
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
+  const [userDetails, setUserDetails] = useState<UserData>({
+    id: "",
+    email: "",
+    name: "",
+    address: "",
+  });
 
   const handleOk = () => {
     setIsModalVisible(false);
@@ -95,7 +114,6 @@ const EditableTable = () => {
     fetch("https://jsonplaceholder.typicode.com/users")
       .then((response) => response.json())
       .then((json) => {
-        console.log("Response", json);
         // res.map((x11: any, index: number) =>
         //   originData.push({
         //     key: x11.id,
@@ -121,9 +139,23 @@ const EditableTable = () => {
     setEditingKey(record.key);
   };
 
-  const view = (record: Partial<Item> & { key: React.Key }) => {
-    form.setFieldsValue({});
-    setEditingKey(record.key);
+  // const view = (record: Partial<Item> & { key: React.Key }) => {
+  //   form.setFieldsValue({});
+  //   setEditingKey(record.key);
+  // };
+
+  const showModal = (record: Partial<Item> & { key: React.Key }) => {
+    console.log("Record type", typeof record);
+    setIsModalVisible(true);
+    {
+      record &&
+        setUserDetails({
+          name: record.name!,
+          id: record.id!,
+          email: record.email!,
+          address: "Address",
+        });
+    }
   };
 
   const cancel = () => {
@@ -199,7 +231,9 @@ const EditableTable = () => {
             <Button
               type="primary"
               style={{ marginRight: 8 }}
-              onClick={showModal}
+              onClick={() => {
+                showModal(record);
+              }}
             >
               View
             </Button>
@@ -209,10 +243,14 @@ const EditableTable = () => {
               onOk={handleOk}
               onCancel={handleCancel}
             >
-              {/* <p> Age is {record.age}</p>
-              <p>Address is {record.address}</p>
-              <p>Key is {record.key}</p>
-              <p>Name is {record.name}</p> */}
+              {userDetails !== null ? (
+                <>
+                  <p>User id: {userDetails.id} </p>
+                  <p>Name: {userDetails.name}</p>
+                  <p>Email: {userDetails.email}</p>
+                  <p>Address: {userDetails.address}</p>
+                </>
+              ) : null}
             </Modal>
             <Typography.Link
               disabled={editingKey !== ""}
@@ -222,10 +260,12 @@ const EditableTable = () => {
               Edit
             </Typography.Link>
             <Typography.Link
-              disabled={editingKey !== ""}
+              // disabled={editingKey !== ""}
               onClick={() => delete1(record)}
             >
-              Delete
+              <Popconfirm title="Sure to delete?" onConfirm={cancel}>
+                <a>Delete</a>
+              </Popconfirm>
             </Typography.Link>
           </>
         );
@@ -263,8 +303,7 @@ const EditableTable = () => {
   //   });
   // };
   // let data1: any = localStorage.getItem("data");
-  // console.log("data1", data1);
-  console.log("Data", data);
+  console.log("user details", userDetails);
   return (
     <>
       {/* <Button onClick={handleAdd} type="primary" style={{ marginBottom: 16 }}>
