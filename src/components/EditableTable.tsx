@@ -224,11 +224,7 @@ const EditableTable = () => {
           </span>
         ) : (
           <>
-            {/* <Typography.Link disabled={editingKey !== ''} onClick={() => view(record)} style={{ marginRight: 8 }}>
-             View
-           </Typography.Link> */}
-
-            <Button
+            {/* <Button
               type="primary"
               style={{ marginRight: 8 }}
               onClick={() => {
@@ -251,7 +247,7 @@ const EditableTable = () => {
                   <p>Address: {userDetails.address}</p>
                 </>
               ) : null}
-            </Modal>
+            </Modal> */}
             <Typography.Link
               disabled={editingKey !== ""}
               onClick={() => edit(record)}
@@ -271,6 +267,69 @@ const EditableTable = () => {
         );
       },
     },
+    // {
+    //   title: "OPERATIONS",
+    //   dataIndex: "operation",
+    //   render: (_: any, record: Item) => {
+    //     const editable = isEditing(record);
+    //     return editable ? (
+    //       <span>
+    //         <a
+    //           href="javascript:;"
+    //           onClick={() => save(record.key)}
+    //           style={{ marginRight: 8 }}
+    //         >
+    //           Save
+    //         </a>
+    //         <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
+    //           <a>Cancel</a>
+    //         </Popconfirm>
+    //       </span>
+    //     ) : (
+    //       <>
+    //         {/* <Button
+    //           type="primary"
+    //           style={{ marginRight: 8 }}
+    //           onClick={() => {
+    //             showModal(record);
+    //           }}
+    //         >
+    //           View
+    //         </Button>
+    //         <Modal
+    //           title="Basic Modal"
+    //           visible={isModalVisible}
+    //           onOk={handleOk}
+    //           onCancel={handleCancel}
+    //         >
+    //           {userDetails !== null ? (
+    //             <>
+    //               <p>User id: {userDetails.id} </p>
+    //               <p>Name: {userDetails.name}</p>
+    //               <p>Email: {userDetails.email}</p>
+    //               <p>Address: {userDetails.address}</p>
+    //             </>
+    //           ) : null}
+    //         </Modal> */}
+    //         <Typography.Link
+    //           disabled={editingKey !== ""}
+    //           onClick={() => edit(record)}
+    //           style={{ marginRight: 8 }}
+    //         >
+    //           Edit
+    //         </Typography.Link>
+    //         <Typography.Link
+    //           // disabled={editingKey !== ""}
+    //           onClick={() => delete1(record)}
+    //         >
+    //           <Popconfirm title="Sure to delete?" onConfirm={cancel}>
+    //             <a>Delete</a>
+    //           </Popconfirm>
+    //         </Typography.Link>
+    //       </>
+    //     );
+    //   },
+    // },
   ];
 
   const mergedColumns = columns.map((col) => {

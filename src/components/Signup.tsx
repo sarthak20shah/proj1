@@ -1,6 +1,9 @@
-import { Form, Input, Button, Checkbox } from "antd";
-import { useState } from "react";
+import { Form, Input, Button, Checkbox, DatePicker } from "antd";
+import moment from "moment";
+import { exit } from "process";
+import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Signup = () => {
   const onFinish = (values: any) => {
@@ -13,10 +16,61 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
+  const [bDate, setBDate] = useState("");
+  const [allUserData, setAllUserData] = useState([]);
+
+  useEffect(() => {
+    if (localStorage.getItem("allUserData") === null) {
+      localStorage.setItem("allUserData", JSON.stringify(allUserData));
+    }
+  }, []);
 
   let history = useHistory();
-  const handleSubmit = () => {
-    history.push("/login");
+
+  // function onChange(date: any, dateString: any) {
+  //   console.log("datestring", dateString);
+  //   console.log("date", date);
+  // }
+
+  const handleSubmit = (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    const usedata: any = localStorage.getItem("allUserData");
+    const allUserData = JSON.parse(usedata);
+    let format = moment(bDate).format("DD/MM/YYYY");
+    console.log("format", format);
+    if (allUserData.length < 1) {
+      const newUserData = { name, email, password, format };
+      allUserData.push(newUserData);
+      localStorage.setItem("allUserData", JSON.stringify(allUserData));
+      history.push("/login");
+    } else {
+      const isUserDataAvailable = allUserData.find((element: any) => {
+        return element.email === email;
+      });
+      console.log("isUserDataAvailable", isUserDataAvailable);
+      if (isUserDataAvailable !== undefined) {
+        toast.error("EMAIL IS ALREADY TAKEN");
+      } else {
+        const newUserData = { name, email, password, format };
+        allUserData.push(newUserData);
+        localStorage.setItem("allUserData", JSON.stringify(allUserData));
+        toast.success("SIGN UP SUCCESSFUL");
+        history.push("/login");
+      }
+      // if (element && element.email === email) {
+      //
+      //   return;
+      // } else {
+      // const newUserData = { name, email, password };
+      // allUserData.push(newUserData);
+      // localStorage.setItem("allUserData", JSON.stringify(allUserData));
+      //   return;
+      // }
+    }
+
+    // localStorage.setItem("name", name);
+    // localStorage.setItem("password", password);
+    // localStorage.setItem("email", email);
   };
 
   return (
@@ -41,6 +95,7 @@ const Signup = () => {
                           className="form-control"
                           value={name}
                           onChange={(e) => setName(e.target.value)}
+                          required={true}
                         />
                         <label className="form-label" htmlFor="form3Example1c">
                           Your Name
@@ -57,9 +112,33 @@ const Signup = () => {
                           className="form-control"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
+                          required={true}
                         />
                         <label className="form-label" htmlFor="form3Example3c">
                           Your Email
+                        </label>
+                      </div>
+                    </div>
+
+                    <div className="d-flex flex-row align-items-center mb-4">
+                      <i className="fas fa-envelope fa-lg me-3 fa-fw"></i>
+                      <div className="form-outline flex-fill mb-0">
+                        {/* <input
+                          type="text"
+                          className="form-control"
+                          value={bDate}
+                          
+                          required={true}
+                        /> */}
+
+                        <DatePicker
+                          onChange={(dateString: any) => {
+                            setBDate(dateString);
+                          }}
+                          id="form3Example3c"
+                        />
+                        <label className="form-label" htmlFor="form3Example3c">
+                          Your Birthdate
                         </label>
                       </div>
                     </div>
@@ -73,6 +152,7 @@ const Signup = () => {
                           className="form-control"
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
+                          required={true}
                         />
                         <label className="form-label" htmlFor="form3Example4c">
                           Password
