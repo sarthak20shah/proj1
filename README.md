@@ -1,4 +1,8 @@
 # Getting Started with Create React App
+clone project on your system
+#install dependencies 
+run this command in terminal: yarn install 
+
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
