@@ -196,6 +196,10 @@ const Ed = () => {
       dataIndex: "id",
       width: "15%",
       editable: true,
+      sorter: {
+        compare: (a: any, b: any) => a.id - b.id,
+        multiple: 1,
+      },
     },
     {
       title: "email",
