@@ -206,6 +206,7 @@ const Ed = () => {
       dataIndex: "email",
       width: "40%",
       editable: true,
+      sorter: (a: any, b: any) => a.email.localeCompare(b.email),
     },
     {
       title: "",
