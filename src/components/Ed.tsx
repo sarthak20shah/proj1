@@ -196,6 +196,7 @@ const Ed = () => {
       dataIndex: "id",
       width: "15%",
       editable: true,
+
       sorter: {
         compare: (a: any, b: any) => a.id - b.id,
         multiple: 1,
@@ -306,7 +307,8 @@ const Ed = () => {
               cell: EditableCell,
             },
           }}
-          bordered
+          style={{ width: "100%", overflow: "scroll" }}
+          bordered={true}
           dataSource={data}
           rowKey={"ffgf"}
           columns={mergedColumns}
