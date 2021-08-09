@@ -1,19 +1,30 @@
+import { Button } from "antd";
 import React from "react";
 import { Link } from "react-router-dom";
 
 function Home() {
   return (
-    <div className="nav bg-dark d-flex justify-content-between">
+    <div className="nav bg-dark d-flex justify-content-right">
       <Link className="nav-link" to="/">
-        Home
+        <Button
+          className="btn btn-raised bg-light"
+          style={{ borderRadius: "50px" }}
+        >
+          Home
+        </Button>
       </Link>
 
       <Link className="nav-link" to="/login">
-        Login
+        <Button
+          className="btn btn-raised bg-light"
+          style={{ borderRadius: "50px" }}
+        >
+          Login
+        </Button>
       </Link>
-      <Link className="nav-link" to="/signup">
+      {/* <Link className="nav-link" to="/signup">
         Register
-      </Link>
+      </Link> */}
     </div>
   );
 }
