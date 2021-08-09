@@ -19,7 +19,10 @@ function App() {
 
       <Route path="/header" component={Head} exact />
       <Switch>
-        <Route path="/" exact component={Home} />
+        <Route path="/" exact>
+          <Home />
+          <Signup />
+        </Route>
         <Route path="/login" component={Login} exact />
 
         <Route path="/table" component={Ed} exact />

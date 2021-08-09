@@ -89,23 +89,28 @@ const Signup = () => {
                     <div className="d-flex flex-row align-items-center mb-4">
                       <i className="fas fa-user fa-lg me-3 fa-fw"></i>
                       <div className="form-outline flex-fill mb-0">
+                        <label className="form-label" htmlFor="form3Example1c">
+                          Your Name
+                        </label>
                         <input
+                          autoComplete="true"
                           type="text"
                           id="form3Example1c"
                           className="form-control"
                           value={name}
                           onChange={(e) => setName(e.target.value)}
                           required={true}
+                          placeholder="Enter your name"
                         />
-                        <label className="form-label" htmlFor="form3Example1c">
-                          Your Name
-                        </label>
                       </div>
                     </div>
 
                     <div className="d-flex flex-row align-items-center mb-4">
                       <i className="fas fa-envelope fa-lg me-3 fa-fw"></i>
                       <div className="form-outline flex-fill mb-0">
+                        <label className="form-label" htmlFor="form3Example3c">
+                          Your Email
+                        </label>
                         <input
                           type="email"
                           id="form3Example3c"
@@ -113,10 +118,8 @@ const Signup = () => {
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           required={true}
+                          placeholder="Enter email id"
                         />
-                        <label className="form-label" htmlFor="form3Example3c">
-                          Your Email
-                        </label>
                       </div>
                     </div>
 
@@ -130,22 +133,27 @@ const Signup = () => {
                           
                           required={true}
                         /> */}
+                        <label className="form-label" htmlFor="form3Example3c">
+                          Your Birthdate
+                        </label>
 
                         <DatePicker
                           onChange={(dateString: any) => {
                             setBDate(dateString);
                           }}
                           id="form3Example3c"
+                          className="form-control"
+                          placeholder="Choose birthdate"
                         />
-                        <label className="form-label" htmlFor="form3Example3c">
-                          Your Birthdate
-                        </label>
                       </div>
                     </div>
 
                     <div className="d-flex flex-row align-items-center mb-4">
                       <i className="fas fa-lock fa-lg me-3 fa-fw"></i>
                       <div className="form-outline flex-fill mb-0">
+                        <label className="form-label" htmlFor="form3Example4c">
+                          Password
+                        </label>
                         <input
                           type="password"
                           id="form3Example4c"
@@ -153,10 +161,8 @@ const Signup = () => {
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
                           required={true}
+                          placeholder="Enter your password"
                         />
-                        <label className="form-label" htmlFor="form3Example4c">
-                          Password
-                        </label>
                       </div>
                     </div>
 
@@ -173,7 +179,7 @@ const Signup = () => {
                 </div>
                 <div className="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
                   <img
-                    src="https://mdbootstrap.com/img/Photos/new-templates/bootstrap-registration/draw1.png"
+                    src="https://i.imgur.com/cEmbD0i.jpg"
                     className="img-fluid"
                     alt="Sample image"
                   />

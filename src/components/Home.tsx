@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 function Home() {
   return (
-    <div className="nav bg-light d-flex justify-content-between">
+    <div className="nav bg-dark d-flex justify-content-between">
       <Link className="nav-link" to="/">
         Home
       </Link>

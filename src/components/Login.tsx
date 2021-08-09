@@ -5,6 +5,7 @@ import { useHistory } from "react-router";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import moment from "moment";
+import "./Login.css";
 
 const Login = () => {
   const onFinish = (values: any) => {
@@ -87,62 +88,81 @@ const Login = () => {
   };
 
   return (
-    <div className="container">
-      <div className="row justify-content-center">
-        <div className="form-group col-md-4 col-md-offset-5 align-center">
-          <Form
-            name="normal_login"
-            className="login-form"
-            initialValues={{ remember: true }}
-            onFinish={handleSubmit}
-          >
-            <Form.Item
-              name="username"
-              rules={[
-                { required: true, message: "Please input your Username!" },
-              ]}
+    <>
+      <div style={{ backgroundColor: "yellowgreen" }}>
+        <div className="row justify-content-center">
+          <div className="form-group col-md-4 col-md-offset-5 align-center">
+            <Form
+              name="normal_login"
+              className="login-form"
+              initialValues={{ remember: true }}
+              onFinish={handleSubmit}
             >
-              <Input
-                prefix={<UserOutlined className="site-form-item-icon" />}
-                placeholder="Username"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </Form.Item>
-            <Form.Item
-              name="password"
-              rules={[
-                { required: true, message: "Please input your Password!" },
-              ]}
-            >
-              <Input
-                prefix={<LockOutlined className="site-form-item-icon" />}
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </Form.Item>
-            <Form.Item>
-              <Form.Item name="remember" valuePropName="checked" noStyle>
-                <Checkbox>Remember me</Checkbox>
-              </Form.Item>
-            </Form.Item>
-
-            <Form.Item>
-              <Button
-                type="primary"
-                htmlType="submit"
-                className="login-form-button"
-                // onClick={() => handleSubmit}
+              <Form.Item
+                name="username"
+                rules={[
+                  { required: true, message: "Please input your Username!" },
+                ]}
               >
-                Log in
-              </Button>
-            </Form.Item>
-          </Form>
+                <label className="form-label" htmlFor="jhakjhakhs">
+                  {" "}
+                  Username
+                </label>
+                <Input
+                  prefix={<UserOutlined className="site-form-item-icon" />}
+                  placeholder="Username"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  id="jhakjhakhs"
+                />
+              </Form.Item>
+              <Form.Item
+                name="password"
+                rules={[
+                  { required: true, message: "Please input your Password!" },
+                ]}
+              >
+                <label className="form-label" htmlFor="fshgsfhasfa">
+                  {" "}
+                  Password
+                </label>
+                <Input
+                  prefix={<LockOutlined className="site-form-item-icon" />}
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  id="fshgsfhasfa"
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </Form.Item>
+              <Form.Item>
+                <Form.Item name="remember" valuePropName="checked" noStyle>
+                  <Checkbox>Remember me</Checkbox>
+                </Form.Item>
+              </Form.Item>
+
+              <Form.Item>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  className="login-form-button btn float-right login_btn"
+                  // onClick={() => handleSubmit}
+                >
+                  Log in
+                </Button>
+              </Form.Item>
+            </Form>
+          </div>
         </div>
       </div>
-    </div>
+      <div>
+        <img
+          src="https://t4.ftcdn.net/jpg/01/19/11/55/360_F_119115529_mEnw3lGpLdlDkfLgRcVSbFRuVl6sMDty.jpg"
+          width="100%"
+          height="100%"
+        ></img>
+      </div>
+    </>
   );
 };
 
