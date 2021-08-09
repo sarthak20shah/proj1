@@ -32,8 +32,7 @@ const Signup = () => {
   //   console.log("date", date);
   // }
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
-    e.preventDefault();
+  const handleSubmit = () => {
     const usedata: any = localStorage.getItem("allUserData");
     const allUserData = JSON.parse(usedata);
     let format = moment(bDate).format("DD/MM/YYYY");
@@ -92,47 +91,63 @@ const Signup = () => {
             Sign up
           </p>
 
-          <form className="mx-1 mx-md-5">
+          <Form className="mx-1 mx-md-5" onFinish={handleSubmit}>
             <div className="d-flex flex-row align-items-center mb-4">
               <i className="fas fa-user fa-lg me-3 fa-fw"></i>
-              <div className="form-outline flex-fill mb-0">
-                <label className="form-label" htmlFor="form3Example1c">
-                  Your Name
-                </label>
-                <input
+              <Form.Item
+                className="form-outline flex-fill mb-0"
+                rules={[{ required: true, message: "Please input your Name!" }]}
+                label="Name"
+                name="Name"
+              >
+                {/* <input
                   autoComplete="true"
-                  type="text"
-                  id="form3Example1c"
+                 
+                 
                   className="form-control"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  required={true}
                   placeholder="Enter your name"
+                /> */}
+                <Input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                 />
-              </div>
+              </Form.Item>
             </div>
 
             <div className="d-flex flex-row align-items-center mb-4">
               <i className="fas fa-envelope fa-lg me-3 fa-fw"></i>
-              <div className="form-outline flex-fill mb-0">
-                <label className="form-label" htmlFor="form3Example3c">
-                  Your Email
-                </label>
+              <Form.Item
+                className="form-outline flex-fill mb-0"
+                rules={[
+                  { required: true, message: "Please input your Email!" },
+                ]}
+                label="Email"
+                name="Email"
+              >
                 <input
                   type="email"
                   id="form3Example3c"
                   className="form-control"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  required={true}
                   placeholder="Enter email id"
                 />
-              </div>
+              </Form.Item>
             </div>
 
             <div className="d-flex flex-row align-items-center mb-4">
               <i className="fas fa-envelope fa-lg me-3 fa-fw"></i>
-              <div className="form-outline flex-fill mb-0">
+              <Form.Item
+                className="form-outline flex-fill mb-0"
+                rules={[
+                  { required: true, message: "Please input your Birthdate!" },
+                ]}
+                label="Birthdate"
+                name="Birthdate"
+              >
                 {/* <input
                           type="text"
                           className="form-control"
@@ -140,9 +155,6 @@ const Signup = () => {
                           
                           required={true}
                         /> */}
-                <label className="form-label" htmlFor="form3Example3c">
-                  Your Birthdate
-                </label>
 
                 <DatePicker
                   onChange={(dateString: any) => {
@@ -152,37 +164,41 @@ const Signup = () => {
                   className="form-control"
                   placeholder="Choose birthdate"
                 />
-              </div>
+              </Form.Item>
             </div>
 
             <div className="d-flex flex-row align-items-center mb-4">
               <i className="fas fa-lock fa-lg me-3 fa-fw"></i>
-              <div className="form-outline flex-fill mb-0">
-                <label className="form-label" htmlFor="form3Example4c">
-                  Password
-                </label>
+              <Form.Item
+                className="form-outline flex-fill mb-0"
+                rules={[
+                  { required: true, message: "Please input your Password!" },
+                ]}
+                label="Password"
+                name="Password"
+              >
                 <input
                   type="password"
                   id="form3Example4c"
                   className="form-control"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  required={true}
                   placeholder="Enter your password"
                 />
-              </div>
+              </Form.Item>
             </div>
 
-            <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-              <button
-                type="button"
+            <Form.Item className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+              <Button
+                htmlType="submit"
+                // type="button"
                 className="btn btn-primary btn-lg"
-                onClick={handleSubmit}
+                // onClick={handleSubmit}
               >
                 Register
-              </button>
-            </div>
-          </form>
+              </Button>
+            </Form.Item>
+          </Form>
         </div>
         <div className="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
           {/* <img

@@ -11,6 +11,9 @@ const Login = () => {
   const onFinish = (values: any) => {
     console.log("Received values of form: ", values);
   };
+  const onFinishFailed = (values: any) => {
+    toast.error(values);
+  };
 
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -104,13 +107,21 @@ const Login = () => {
         <div className="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
           <p className="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Login</p>
 
-          <form className="mx-1 mx-md-5">
+          <Form
+            className="mx-1 mx-md-5"
+            onFinish={handleSubmit}
+            onFinishFailed={onFinishFailed}
+          >
             <div className="d-flex flex-row align-items-center mb-4">
               <i className="fas fa-user fa-lg me-3 fa-fw"></i>
-              <div className="form-outline flex-fill mb-0">
-                <label className="form-label" htmlFor="form3Example1c">
-                  Your Name
-                </label>
+              <Form.Item
+                label="Username"
+                name="username"
+                className="form-outline flex-fill mb-0"
+                rules={[
+                  { required: true, message: "Please input your username!" },
+                ]}
+              >
                 <input
                   autoComplete="true"
                   type="text"
@@ -118,40 +129,44 @@ const Login = () => {
                   className="form-control"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  required={true}
+                  required
                   placeholder="Enter your name"
                 />
-              </div>
+              </Form.Item>
             </div>
 
             <div className="d-flex flex-row align-items-center mb-4">
               <i className="fas fa-lock fa-lg me-3 fa-fw"></i>
-              <div className="form-outline flex-fill mb-0">
-                <label className="form-label" htmlFor="form3Example4c">
-                  Password
-                </label>
+              <Form.Item
+                className="form-outline flex-fill mb-0"
+                rules={[
+                  { required: true, message: "Please input your Password!" },
+                ]}
+                label="Password"
+                name="Password"
+              >
                 <input
                   type="password"
                   id="form3Example4c"
                   className="form-control"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  required={true}
+                  required
                   placeholder="Enter your password"
                 />
-              </div>
+              </Form.Item>
             </div>
 
-            <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-              <button
-                type="button"
+            <Form.Item className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+              <Button
+                htmlType="submit"
                 className="btn btn-primary btn-lg"
-                onClick={handleSubmit}
+                // onClick={handleSubmit}
               >
                 Login
-              </button>
-            </div>
-          </form>
+              </Button>
+            </Form.Item>
+          </Form>
         </div>
         <div className="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
           {/* <img

@@ -62,8 +62,13 @@ function Addnew() {
             {...layout}
             name="nest-messages"
             validateMessages={validateMessages}
+            onFinish={handleSubmit}
           >
-            <Form.Item name={["user", "name"]} label="Name">
+            <Form.Item
+              label="Name"
+              name="Name"
+              rules={[{ required: true, message: "Please input your Name!" }]}
+            >
               <Input
                 required={true}
                 value={name}
@@ -71,15 +76,17 @@ function Addnew() {
               />
             </Form.Item>
             <Form.Item
-              name={["user", "email"]}
               label="Email"
-              rules={[{ type: "email" }]}
+              name="Email"
+              rules={[
+                {
+                  type: "email",
+                  required: true,
+                  message: "Please input your Email!",
+                },
+              ]}
             >
-              <Input
-                value={email}
-                required={true}
-                onChange={(e) => setEmail(e.target.value)}
-              />
+              <Input value={email} onChange={(e) => setEmail(e.target.value)} />
             </Form.Item>
             {/* <Form.Item
           name={["user", "age"]}
@@ -99,7 +106,7 @@ function Addnew() {
           <Input.TextArea />
         </Form.Item> */}
             <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-              <Button type="primary" htmlType="submit" onClick={handleSubmit}>
+              <Button type="primary" htmlType="submit">
                 Submit
               </Button>
             </Form.Item>
