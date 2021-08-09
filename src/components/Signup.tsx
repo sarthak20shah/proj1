@@ -1,8 +1,9 @@
 import { Form, Input, Button, Checkbox, DatePicker } from "antd";
+import { addDays, subDays } from "date-fns";
 import moment from "moment";
 import { exit } from "process";
 import { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const Signup = () => {
@@ -16,6 +17,7 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [bDate, setBDate] = useState("");
   const [allUserData, setAllUserData] = useState([]);
 
@@ -32,6 +34,10 @@ const Signup = () => {
   //   console.log("date", date);
   // }
 
+  function disabledDate(current: any) {
+    let customDate = new Date();
+    return current && current > moment(customDate, "YYYY-MM-DD");
+  }
   const handleSubmit = () => {
     const usedata: any = localStorage.getItem("allUserData");
     const allUserData = JSON.parse(usedata);
@@ -160,6 +166,8 @@ const Signup = () => {
                   onChange={(dateString: any) => {
                     setBDate(dateString);
                   }}
+                  format="YYYY-MM-DD"
+                  disabledDate={disabledDate}
                   id="form3Example3c"
                   className="form-control"
                   placeholder="Choose birthdate"
@@ -175,9 +183,10 @@ const Signup = () => {
                   { required: true, message: "Please input your Password!" },
                 ]}
                 label="Password"
-                name="Password"
+                name="password"
+                hasFeedback
               >
-                <input
+                <Input.Password
                   type="password"
                   id="form3Example4c"
                   className="form-control"
@@ -188,15 +197,58 @@ const Signup = () => {
               </Form.Item>
             </div>
 
-            <Form.Item className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-              <Button
-                htmlType="submit"
-                // type="button"
-                className="btn btn-primary btn-lg"
-                // onClick={handleSubmit}
+            <div className="d-flex flex-row align-items-center mb-4">
+              <i className="fas fa-lock fa-lg me-3 fa-fw"></i>
+              <Form.Item
+                className="form-outline flex-fill mb-0"
+                label="ConfirmPassword"
+                name="ConfirmPassword"
+                dependencies={["password"]}
+                hasFeedback
+                rules={[
+                  {
+                    required: true,
+                    message: "Please confirm your password!",
+                  },
+                  ({ getFieldValue }) => ({
+                    validator(_, value) {
+                      if (!value || getFieldValue("password") === value) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject(
+                        new Error(
+                          "The two passwords that you entered do not match!"
+                        )
+                      );
+                    },
+                  }),
+                ]}
               >
-                Register
-              </Button>
+                <Input.Password
+                  type="password"
+                  id="form3Example4c"
+                  className="form-control"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="Enter your password"
+                />
+              </Form.Item>
+            </div>
+
+            <Form.Item className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+              <span>
+                <Button
+                  htmlType="submit"
+                  // type="button"
+                  className="btn btn-primary btn-lg"
+                  // onClick={handleSubmit}
+                >
+                  Register
+                </Button>
+                <Link to="/login" style={{ marginLeft: "25px" }}>
+                  Already have an account? Login here
+                </Link>
+              </span>
             </Form.Item>
           </Form>
         </div>

@@ -11,6 +11,7 @@ import Home from "./components/Home";
 import { ToastContainer, toast } from "react-toastify";
 import Addnew from "./components/Addnew";
 import FinalTb from "./components/FinalTb";
+import Home1 from "./components/Home1";
 
 function App() {
   return (
@@ -23,7 +24,10 @@ function App() {
           <Home />
           <Signup />
         </Route>
-        <Route path="/login" component={Login} exact />
+        <Route path="/login" exact>
+          <Home1 />
+          <Login />
+        </Route>
 
         <Route path="/table" component={Ed} exact />
         <Route path="/signup" component={Signup} exact />

@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import moment from "moment";
 import "./Login.css";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const onFinish = (values: any) => {
@@ -122,7 +123,7 @@ const Login = () => {
                   { required: true, message: "Please input your username!" },
                 ]}
               >
-                <input
+                <Input
                   autoComplete="true"
                   type="text"
                   id="form3Example1c"
@@ -145,7 +146,7 @@ const Login = () => {
                 label="Password"
                 name="Password"
               >
-                <input
+                <Input.Password
                   type="password"
                   id="form3Example4c"
                   className="form-control"
@@ -158,13 +159,18 @@ const Login = () => {
             </div>
 
             <Form.Item className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-              <Button
-                htmlType="submit"
-                className="btn btn-primary btn-lg"
-                // onClick={handleSubmit}
-              >
-                Login
-              </Button>
+              <span>
+                <Button
+                  htmlType="submit"
+                  className="btn btn-primary btn-lg"
+                  // onClick={handleSubmit}
+                >
+                  Login
+                </Button>
+                <Link to="/signup" style={{ marginLeft: "25px" }}>
+                  Don't have an account? Sign Up here
+                </Link>
+              </span>
             </Form.Item>
           </Form>
         </div>
