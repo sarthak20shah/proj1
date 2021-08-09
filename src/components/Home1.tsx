@@ -14,7 +14,7 @@ function Home1() {
         {/* </Button> */}
       </Link>
 
-      <Link className="nav-link" to="/Signup">
+      <Link className="nav-link" to="/">
         {/* <Button
           className="btn btn-raised bg-light"
           // style={{ borderRadius: "50px", boxSizing: "border-box" }}
