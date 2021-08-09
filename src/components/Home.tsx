@@ -6,21 +6,21 @@ function Home() {
   return (
     <div className="nav bg-dark d-flex justify-content-right">
       <Link className="nav-link" to="/">
-        <Button
+        {/* <Button
           className="btn btn-raised bg-light"
-          style={{ borderRadius: "50px" }}
-        >
-          Home
-        </Button>
+          // style={{ borderRadius: "50px", boxSizing: "border-box" }}
+        > */}
+        Home
+        {/* </Button> */}
       </Link>
 
       <Link className="nav-link" to="/login">
-        <Button
+        {/* <Button
           className="btn btn-raised bg-light"
-          style={{ borderRadius: "50px" }}
-        >
-          Login
-        </Button>
+          // style={{ borderRadius: "50px", boxSizing: "border-box" }}
+        > */}
+        Login
+        {/* </Button> */}
       </Link>
       {/* <Link className="nav-link" to="/signup">
         Register
