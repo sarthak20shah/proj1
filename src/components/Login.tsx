@@ -104,10 +104,6 @@ const Login = () => {
                   { required: true, message: "Please input your Username!" },
                 ]}
               >
-                <label className="form-label" htmlFor="jhakjhakhs">
-                  {" "}
-                  Username
-                </label>
                 <Input
                   prefix={<UserOutlined className="site-form-item-icon" />}
                   placeholder="Username"
@@ -122,10 +118,6 @@ const Login = () => {
                   { required: true, message: "Please input your Password!" },
                 ]}
               >
-                <label className="form-label" htmlFor="fshgsfhasfa">
-                  {" "}
-                  Password
-                </label>
                 <Input
                   prefix={<LockOutlined className="site-form-item-icon" />}
                   type="password"
