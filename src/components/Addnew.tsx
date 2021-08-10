@@ -9,7 +9,7 @@ const layout = {
 
 /* eslint-disable no-template-curly-in-string */
 const validateMessages = {
-  required: "${label} is required!",
+  required: "${label} is required JZJHH!",
   types: {
     email: "${label} is not a valid email!",
     number: "${label} is not a valid number!",
@@ -28,8 +28,7 @@ function Addnew() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
+  const handleSubmit = () => {
     let latestData: any = localStorage.getItem("tableData");
     // console.log("latestData", latestData);
     let newData = JSON.parse(latestData);
@@ -63,6 +62,8 @@ function Addnew() {
             name="nest-messages"
             validateMessages={validateMessages}
             onFinish={handleSubmit}
+            labelCol={{ span: 5 }}
+            wrapperCol={{ span: 19 }}
           >
             <Form.Item
               label="Name"

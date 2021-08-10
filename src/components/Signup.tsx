@@ -5,6 +5,7 @@ import { exit } from "process";
 import { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
+import "./signup.css";
 
 const Signup = () => {
   const onFinish = (values: any) => {
@@ -97,7 +98,12 @@ const Signup = () => {
             Sign up
           </p>
 
-          <Form className="mx-1 mx-md-5" onFinish={handleSubmit}>
+          <Form
+            className="mx-1 mx-md-5"
+            onFinish={handleSubmit}
+            labelCol={{ span: 5 }}
+            wrapperCol={{ span: 19 }}
+          >
             <div className="d-flex flex-row align-items-center mb-4">
               <i className="fas fa-user fa-lg me-3 fa-fw"></i>
               <Form.Item
@@ -201,7 +207,7 @@ const Signup = () => {
               <i className="fas fa-lock fa-lg me-3 fa-fw"></i>
               <Form.Item
                 className="form-outline flex-fill mb-0"
-                label="ConfirmPassword"
+                label="Confirm"
                 name="ConfirmPassword"
                 dependencies={["password"]}
                 hasFeedback
@@ -235,8 +241,11 @@ const Signup = () => {
               </Form.Item>
             </div>
 
-            <Form.Item className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-              <span>
+            <Form.Item
+              className="d-flex justify-content-center mx-4 mb-3 mb-lg-4"
+              style={{ width: "100%" }}
+            >
+              <span className="d-flex justify-content-between">
                 <Button
                   htmlType="submit"
                   // type="button"
