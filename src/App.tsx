@@ -12,6 +12,7 @@ import { ToastContainer, toast } from "react-toastify";
 import Addnew from "./components/Addnew";
 import FinalTb from "./components/FinalTb";
 import Home1 from "./components/Home1";
+import BaseFormik from "./components/BaseFormik";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
         <Route path="/signup" component={Signup} exact />
 
         <Route path="/addnew" component={Addnew} exact />
+        <Route path="/base" exact component={BaseFormik} />
         <Route component={PageNotFound} />
       </Switch>
     </>

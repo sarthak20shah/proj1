@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Form, Input, InputNumber, Button } from "antd";
 import { useHistory } from "react-router";
+import { Formik, useFormik, withFormik } from "formik";
+import FormList from "antd/lib/form/FormList";
 
 const layout = {
   labelCol: { span: 8 },
@@ -20,6 +22,56 @@ const validateMessages = {
 };
 
 function Addnew() {
+  interface error1 {
+    name?: string;
+    email?: string;
+  }
+
+  const validate = (values: any) => {
+    const errors: error1 = {};
+
+    if (!values.email) {
+      errors.email = "Required";
+    } else if (
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(formik.values.email)
+    ) {
+      errors.email = "Invalid email address";
+    }
+
+    if (!values.name) {
+      errors.name = "Required";
+    } else if (values.name.length < 8) {
+      errors.name = "Must be 8 characters or more";
+    }
+
+    //...
+
+    return errors;
+  };
+
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      email: "",
+    },
+    validate,
+    onSubmit: (values) => {
+      let latestData: any = localStorage.getItem("tableData");
+      // console.log("latestData", latestData);
+      let newData = JSON.parse(latestData);
+      // console.log("newData", newData);
+      // console.log("last_id", newData[newData.length - 1].id);
+      newData.push({
+        id: newData[newData.length - 1].id + 1,
+        name: values.name,
+        email: values.email,
+      });
+      // console.log("newData", newData);
+      localStorage.setItem("tableData", JSON.stringify(newData));
+      history.push("/table");
+    },
+  });
+
   const onFinish = (values: any) => {
     console.log(values);
   };
@@ -61,33 +113,65 @@ function Addnew() {
             {...layout}
             name="nest-messages"
             validateMessages={validateMessages}
-            onFinish={handleSubmit}
+            onFinish={formik.handleSubmit}
             labelCol={{ span: 5 }}
             wrapperCol={{ span: 19 }}
           >
             <Form.Item
               label="Name"
-              name="Name"
-              rules={[{ required: true, message: "Please input your Name!" }]}
+              name="name"
+              // rules={[{ required: true, message: "Please input your Name!" }]}
             >
               <Input
-                required={true}
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={formik.values.name}
+                // onChange={(e) => setName(e.target.value)}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                name="name"
               />
+              {formik.errors.name ? (
+                <div
+                  style={{
+                    fontSize: "12px",
+                    color: "red",
+                    marginTop: "10px",
+                    marginBottom: "10px",
+                  }}
+                >
+                  {formik.errors.name}
+                </div>
+              ) : null}
             </Form.Item>
             <Form.Item
               label="Email"
-              name="Email"
-              rules={[
-                {
-                  type: "email",
-                  required: true,
-                  message: "Please input your Email!",
-                },
-              ]}
+              name="email"
+              // rules={[
+              //   {
+              //     type: "email",
+              //     required: true,
+              //     message: "Please input your Email!",
+              //   },
+              // ]}
             >
-              <Input value={email} onChange={(e) => setEmail(e.target.value)} />
+              <Input
+                value={formik.values.email}
+                // onChange={(e) => setEmail(e.target.value)}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                name="email"
+              />
+              {formik.errors.email ? (
+                <div
+                  style={{
+                    fontSize: "12px",
+                    color: "red",
+                    marginTop: "10px",
+                    marginBottom: "10px",
+                  }}
+                >
+                  {formik.errors.email}
+                </div>
+              ) : null}
             </Form.Item>
             {/* <Form.Item
           name={["user", "age"]}

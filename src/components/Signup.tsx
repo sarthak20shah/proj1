@@ -1,13 +1,109 @@
 import { Form, Input, Button, Checkbox, DatePicker } from "antd";
 import { addDays, subDays } from "date-fns";
-import moment from "moment";
+import moment, { Moment } from "moment";
 import { exit } from "process";
 import { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
+import { Formik, useFormik, withFormik } from "formik";
+
 import "./signup.css";
 
 const Signup = () => {
+  interface error1 {
+    email?: string;
+    password?: string;
+    name?: string;
+    bDate?: any;
+    confirm?: any;
+  }
+
+  const validate = (values: any) => {
+    const errors: error1 = {};
+
+    if (!values.email) {
+      errors.email = "Required";
+    } else if (
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(formik.values.email)
+    ) {
+      errors.email = "Invalid email address";
+    }
+
+    if (!values.password) {
+      errors.password = "Required";
+    } else if (values.password.length < 8) {
+      errors.password = "Must be 8 characters or more";
+    }
+
+    if (values.bDate === "") {
+      errors.bDate = "Required";
+    }
+    if (!values.name) {
+      errors.name = "Required";
+    }
+    if (!values.confirm) {
+      errors.confirm = "Required";
+    }
+    if (values.password !== values.confirm) {
+      errors.confirm = "Both passwords dont match!!!";
+    }
+    //...
+
+    return errors;
+  };
+
+  const formik = useFormik({
+    // initialValues: {
+    //   name: "",
+    //   bDate: "",
+    //   email: "",
+    //   password: "",
+    //   confirm: "",
+    // },
+    // onSubmit: (values) => {
+    //   console.log("values", values);
+    // },
+    initialValues: {
+      name: "",
+      bDate: "",
+      email: "",
+      password: "",
+      confirm: "",
+    },
+    validate,
+    onSubmit: (values) => {
+      console.log("values.email", values);
+      // console.log("values.name", formik.values.name);
+      // console.log("values.password", formik.values.password);
+      // console.log("values.bdate", formik.values.bDate);
+      //////////////
+      const usedata: any = localStorage.getItem("allUserData");
+      const allUserData = JSON.parse(usedata);
+      let format = moment(values.bDate).format("MM/DD/YYYY");
+      console.log("format", format);
+      if (allUserData.length < 1) {
+        const newUserData = { ...values, bDate: format };
+        allUserData.push(newUserData);
+        localStorage.setItem("allUserData", JSON.stringify(allUserData));
+        history.push("/login");
+      } else {
+        const isUserDataAvailable = allUserData.find((element: any) => {
+          return element.email === values.email;
+        });
+        console.log("isUserDataAvailable", isUserDataAvailable);
+        if (isUserDataAvailable !== undefined) {
+          toast.error("EMAIL IS ALREADY TAKEN");
+        } else {
+          const newUserData = { ...values, bDate: format };
+          allUserData.push(newUserData);
+          localStorage.setItem("allUserData", JSON.stringify(allUserData));
+          toast.success("SIGN UP SUCCESSFUL");
+          history.push("/login");
+        }
+      }
+    },
+  });
+
   const onFinish = (values: any) => {
     console.log("Success:", values);
   };
@@ -19,7 +115,7 @@ const Signup = () => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [bDate, setBDate] = useState("");
+  const [bDate, setBDate] = useState<string>("");
   const [allUserData, setAllUserData] = useState([]);
 
   useEffect(() => {
@@ -42,7 +138,7 @@ const Signup = () => {
   const handleSubmit = () => {
     const usedata: any = localStorage.getItem("allUserData");
     const allUserData = JSON.parse(usedata);
-    let format = moment(bDate).format("DD/MM/YYYY");
+    let format = moment(bDate).format("MM/DD/YYYY");
     console.log("format", format);
     if (allUserData.length < 1) {
       const newUserData = { name, email, password, format };
@@ -100,7 +196,7 @@ const Signup = () => {
 
           <Form
             className="mx-1 mx-md-5"
-            onFinish={handleSubmit}
+            onFinish={formik.handleSubmit}
             labelCol={{ span: 5 }}
             wrapperCol={{ span: 19 }}
           >
@@ -108,7 +204,7 @@ const Signup = () => {
               <i className="fas fa-user fa-lg me-3 fa-fw"></i>
               <Form.Item
                 className="form-outline flex-fill mb-0"
-                rules={[{ required: true, message: "Please input your Name!" }]}
+                // rules={[{ required: true, message: "Please input your Name!" }]}
                 label="Name"
                 name="Name"
               >
@@ -122,10 +218,25 @@ const Signup = () => {
                   placeholder="Enter your name"
                 /> */}
                 <Input
+                  name="name"
                   type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  value={formik.values.name}
+                  // onChange={(e) => setName(e.target.value)}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                 />
+                {formik.errors.name ? (
+                  <div
+                    style={{
+                      fontSize: "12px",
+                      color: "red",
+                      marginTop: "10px",
+                      marginBottom: "10px",
+                    }}
+                  >
+                    {formik.errors.name}
+                  </div>
+                ) : null}
               </Form.Item>
             </div>
 
@@ -133,20 +244,35 @@ const Signup = () => {
               <i className="fas fa-envelope fa-lg me-3 fa-fw"></i>
               <Form.Item
                 className="form-outline flex-fill mb-0"
-                rules={[
-                  { required: true, message: "Please input your Email!" },
-                ]}
+                // rules={[
+                //   { required: true, message: "Please input your Email!" },
+                // ]}
                 label="Email"
                 name="Email"
               >
                 <input
-                  type="email"
+                  // type="email"
+                  name="email"
                   id="form3Example3c"
                   className="form-control"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={formik.values.email}
+                  // onChange={(e) => setEmail(e.target.value)}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                   placeholder="Enter email id"
                 />
+                {formik.errors.email ? (
+                  <div
+                    style={{
+                      fontSize: "12px",
+                      color: "red",
+                      marginTop: "10px",
+                      marginBottom: "10px",
+                    }}
+                  >
+                    {formik.errors.email}
+                  </div>
+                ) : null}
               </Form.Item>
             </div>
 
@@ -154,9 +280,9 @@ const Signup = () => {
               <i className="fas fa-envelope fa-lg me-3 fa-fw"></i>
               <Form.Item
                 className="form-outline flex-fill mb-0"
-                rules={[
-                  { required: true, message: "Please input your Birthdate!" },
-                ]}
+                // rules={[
+                //   { required: true, message: "Please input your Birthdate!" },
+                // ]}
                 label="Birthdate"
                 name="Birthdate"
               >
@@ -169,15 +295,39 @@ const Signup = () => {
                         /> */}
 
                 <DatePicker
-                  onChange={(dateString: any) => {
-                    setBDate(dateString);
-                  }}
+                  // onChange={(dateString: any) => {
+                  //   // onChange={formik.handleChange}
+                  //   setBDate(dateString);
+                  // }}
+
+                  onChange={(dateString: any) =>
+                    formik.setFieldValue(
+                      "bDate",
+                      moment(dateString).format("MM/DD/YYYY")
+                    )
+                  }
+                  // value={formik.values.bDate}
+                  // onBlur={formik.handleBlur}
+                  // onChange={formik.handleChange}
+                  name="bDate"
                   format="YYYY-MM-DD"
                   disabledDate={disabledDate}
                   id="form3Example3c"
                   className="form-control"
                   placeholder="Choose birthdate"
                 />
+                {formik.errors.bDate ? (
+                  <div
+                    style={{
+                      fontSize: "12px",
+                      color: "red",
+                      marginTop: "10px",
+                      marginBottom: "10px",
+                    }}
+                  >
+                    {formik.errors.bDate}
+                  </div>
+                ) : null}
               </Form.Item>
             </div>
 
@@ -185,9 +335,9 @@ const Signup = () => {
               <i className="fas fa-lock fa-lg me-3 fa-fw"></i>
               <Form.Item
                 className="form-outline flex-fill mb-0"
-                rules={[
-                  { required: true, message: "Please input your Password!" },
-                ]}
+                // rules={[
+                //   { required: true, message: "Please input your Password!" },
+                // ]}
                 label="Password"
                 name="password"
                 hasFeedback
@@ -196,10 +346,25 @@ const Signup = () => {
                   type="password"
                   id="form3Example4c"
                   className="form-control"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  name="password"
+                  value={formik.values.password}
+                  // onChange={(e) => setPassword(e.target.value)}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                   placeholder="Enter your password"
                 />
+                {formik.errors.password ? (
+                  <div
+                    style={{
+                      fontSize: "12px",
+                      color: "red",
+                      marginTop: "10px",
+                      marginBottom: "10px",
+                    }}
+                  >
+                    {formik.errors.password}
+                  </div>
+                ) : null}
               </Form.Item>
             </div>
 
@@ -208,57 +373,74 @@ const Signup = () => {
               <Form.Item
                 className="form-outline flex-fill mb-0"
                 label="Confirm"
-                name="ConfirmPassword"
+                // name="ConfirmPassword"
+                name="confirm"
                 dependencies={["password"]}
                 hasFeedback
-                rules={[
-                  {
-                    required: true,
-                    message: "Please confirm your password!",
-                  },
-                  ({ getFieldValue }) => ({
-                    validator(_, value) {
-                      if (!value || getFieldValue("password") === value) {
-                        return Promise.resolve();
-                      }
-                      return Promise.reject(
-                        new Error(
-                          "The two passwords that you entered do not match!"
-                        )
-                      );
-                    },
-                  }),
-                ]}
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please confirm your password!",
+                //   },
+                //   ({ getFieldValue }) => ({
+                //     validator(_, value) {
+                //       if (!value || getFieldValue("password") === value) {
+                //         return Promise.resolve();
+                //       }
+                //       return Promise.reject(
+                //         new Error(
+                //           "The two passwords that you entered do not match!"
+                //         )
+                //       );
+                //     },
+                //   }),
+                // ]}
               >
                 <Input.Password
                   type="password"
                   id="form3Example4c"
                   className="form-control"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  name="confirm"
+                  value={formik.values.confirm}
+                  // onChange={(e) => setConfirmPassword(e.target.value)}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                   placeholder="Enter your password"
                 />
+
+                {formik.errors.confirm ? (
+                  <div
+                    style={{
+                      fontSize: "12px",
+                      color: "red",
+                      marginTop: "10px",
+                      marginBottom: "10px",
+                    }}
+                  >
+                    {formik.errors.confirm}
+                    {/* {formik.values.confirm} */}
+                  </div>
+                ) : null}
               </Form.Item>
             </div>
-
-            <Form.Item
-              className="d-flex justify-content-center mx-4 mb-3 mb-lg-4"
-              style={{ width: "100%" }}
-            >
-              <span className="d-flex justify-content-between">
-                <Button
-                  htmlType="submit"
-                  // type="button"
-                  className="btn btn-primary btn-lg"
-                  // onClick={handleSubmit}
-                >
-                  Register
-                </Button>
-                <Link to="/login" style={{ marginLeft: "25px" }}>
-                  Already have an account? Login here
-                </Link>
-              </span>
-            </Form.Item>
+            <div className="align-items-between">
+              <Form.Item
+                className="d-flex  justify-content-between mb-3 mb-lg-4"
+                style={{ width: "100%" }}
+              >
+                <span className="d-flex justify-content-between">
+                  <Button
+                    htmlType="submit"
+                    // type="button"
+                    className="btn btn-primary btn-lg"
+                    // onClick={handleSubmit}
+                  >
+                    Register
+                  </Button>
+                  <Link to="/login">Already have an account? Login here</Link>
+                </span>
+              </Form.Item>
+            </div>
           </Form>
         </div>
         <div className="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">

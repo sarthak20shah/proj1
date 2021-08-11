@@ -7,8 +7,88 @@ import "react-toastify/dist/ReactToastify.css";
 import moment from "moment";
 import "./Login.css";
 import { Link } from "react-router-dom";
+/////////////////////////////
+import { Formik, useFormik, withFormik } from "formik";
+
+////////////////////////////
 
 const Login = () => {
+  interface error1 {
+    name?: string;
+    password?: string;
+  }
+  const validate = (values: any) => {
+    const errors: error1 = {};
+
+    if (!values.name) {
+      errors.name = "Required";
+    } else if (
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(formik.values.name)
+    ) {
+      errors.name = "Invalid email address";
+    }
+
+    if (!values.password) {
+      errors.password = "Required";
+    } else if (values.password.length < 8) {
+      errors.password = "Must be 8 characters or more";
+    }
+
+    //...
+
+    return errors;
+  };
+
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      password: "",
+    },
+    validate,
+    onSubmit: (values) => {
+      // e.preventDefault();
+      // console.log(name + "" + password);
+      let allUserData: any = localStorage.getItem("allUserData");
+      let all = JSON.parse(allUserData);
+      console.log("all", all);
+      // let password1 = localStorage.getItem("password");
+      // console.log(email1 + "   " + password1);
+      let arr = all.filter((item: any) => {
+        return item.email == values.name && item.password == values.password;
+      });
+      console.log("arr", arr);
+      if (arr.length !== 0) {
+        history.push("/table");
+        toast.success("login successful");
+        // check --> if --> arr.bday === today's date { toste}
+        let dx = new Date();
+        let dz = moment(dx).format("MM/DD/YYYY");
+        console.log("dz", dz);
+        console.log("bDate", arr[0].bDate);
+        let x: boolean = true;
+        if (dz[0] !== arr[0].bDate[0]) x = false;
+        if (dz[1] !== arr[0].bDate[1]) x = false;
+        if (dz[2] !== arr[0].bDate[2]) x = false;
+        if (dz[3] !== arr[0].bDate[3]) x = false;
+        if (dz[4] !== arr[0].bDate[4]) x = false;
+
+        if (x) {
+          toast.success("happy birthday", {
+            position: "top-center",
+            autoClose: false,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      } else {
+        toast.error("enter correct login information");
+      }
+    },
+  });
+
   const onFinish = (values: any) => {
     console.log("Received values of form: ", values);
   };
@@ -20,7 +100,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   let history = useHistory();
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit1 = (e: any) => {
     // e.preventDefault();
     // console.log(name + "" + password);
     let allUserData: any = localStorage.getItem("allUserData");
@@ -61,34 +141,6 @@ const Login = () => {
     } else {
       toast.error("enter correct login information");
     }
-
-    // if (email1 === name && password === password1) {
-    //   history.push("/table");
-    //   toast.success("logged in");
-    // } else {
-    //   toast.error("try to log in again with correct info");
-    // }
-
-    // const usedata: any = localStorage.getItem("allUserData");
-    // const allUserData = JSON.parse(usedata);
-    // if (allUserData.length < 1) {
-    //   // const newUserData = { name, email, password };
-    //   allUserData.push(newUserData);
-    //   // localStorage.setItem("allUserData", JSON.stringify(allUserData));
-    //   history.push("/login");
-    // } else {
-    //   const isUserDataAvailable = allUserData.find((element: any) => {
-    //     return element.email === email;
-    //   });
-    //   console.log("isUserDataAvailable", isUserDataAvailable);
-    //   if (isUserDataAvailable !== undefined) {
-    //     toast.error("EMAIL IS ALREADY TAKEN");
-    //   } else {
-    //     const newUserData = { name, email, password };
-    //     allUserData.push(newUserData);
-    //     localStorage.setItem("allUserData", JSON.stringify(allUserData));
-    //     toast.success("SIGN UP SUCCESSFUL");
-    //     history.push("/login");
   };
 
   return (
@@ -101,16 +153,33 @@ const Login = () => {
       }}
     >
       <div className="row d-flex justify-content-center align-items-center h-100">
-        {/* <div className="col-lg-12 col-xl-11"> */}
-        {/* <div className="card text-black"> */}
-        {/* <div className="card-body p-md-5"> */}
-        {/* <div className="row justify-content-center"> */}
+        {/* <Formik
+          initialValues={{ name: "", password: "" }}
+          onSubmit={(values, { setSubmitting }) => {
+            setTimeout(() => {
+              console.log("Logging in", values);
+              setSubmitting(false);
+            }, 500);
+          }}
+        > */}
+        {/* {(props) => {
+            const {
+              values,
+              touched,
+              errors,
+              isSubmitting,
+              handleChange,
+              handleBlur,
+              handleSubmit,
+            } = props; */}
+
         <div className="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
           <p className="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Login</p>
 
           <Form
             className="mx-1 mx-md-5"
-            onFinish={handleSubmit}
+            // onFinish={handleSubmit1}
+            onFinish={formik.handleSubmit}
             onFinishFailed={onFinishFailed}
           >
             <div className="d-flex flex-row align-items-center mb-4">
@@ -119,20 +188,40 @@ const Login = () => {
                 label="Username"
                 name="username"
                 className="form-outline flex-fill mb-0"
-                rules={[
-                  { required: true, message: "Please input your username!" },
-                ]}
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please input your username!",
+                //   },
+                // ]}
               >
                 <Input
                   autoComplete="true"
                   type="text"
+                  name="name"
                   id="form3Example1c"
                   className="form-control"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  // value={name}
+                  value={formik.values.name}
+                  // onChange={(e) => setName(e.target.value)}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                   required
                   placeholder="Enter your name"
+                  // className={"error" && errors.name && touched.name }
                 />
+                {formik.errors.name ? (
+                  <div
+                    style={{
+                      fontSize: "12px",
+                      color: "red",
+                      marginTop: "10px",
+                      marginBottom: "10px",
+                    }}
+                  >
+                    {formik.errors.name}
+                  </div>
+                ) : null}
               </Form.Item>
             </div>
 
@@ -140,21 +229,39 @@ const Login = () => {
               <i className="fas fa-lock fa-lg me-3 fa-fw"></i>
               <Form.Item
                 className="form-outline flex-fill mb-0"
-                rules={[
-                  { required: true, message: "Please input your Password!" },
-                ]}
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please input your Password!",
+                //   },
+                // ]}
                 label="Password"
                 name="Password"
               >
                 <Input.Password
                   type="password"
+                  name="password"
                   id="form3Example4c"
                   className="form-control"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  value={formik.values.password}
+                  // onChange={(e) => setPassword(e.target.value)}
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
                   required
                   placeholder="Enter your password"
                 />
+                {formik.errors.password ? (
+                  <div
+                    style={{
+                      fontSize: "12px",
+                      color: "red",
+                      marginTop: "10px",
+                      marginBottom: "10px",
+                    }}
+                  >
+                    {formik.errors.password}
+                  </div>
+                ) : null}
               </Form.Item>
             </div>
 
@@ -174,12 +281,9 @@ const Login = () => {
             </Form.Item>
           </Form>
         </div>
+
+        {/* </Formik> */}
         <div className="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
-          {/* <img
-                  src="https://i.imgur.com/cEmbD0i.jpg"
-                  className="img-fluid"
-                  alt="Sample image"
-                /> */}
           <svg
             id="e08049af-74c5-410b-9b01-8d98ea218704"
             data-name="Layer 1"
@@ -401,13 +505,18 @@ const Login = () => {
             />
           </svg>
         </div>
-        {/* </div> */}
-        {/* </div> */}
-        {/* </div> */}
-        {/* </div> */}
       </div>
     </div>
   );
 };
 
 export default Login;
+
+// =withFormik({
+
+//   mapPropsToValues:()=>({name:'',password:""}),
+//   handleSubmit:async(values,{props,setErrors,setSubmitting})=>{
+//     const errors=await props.submit(values);
+
+//   }
+// })(C);
