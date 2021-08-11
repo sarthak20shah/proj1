@@ -265,7 +265,7 @@ const Login = () => {
               </Form.Item>
             </div>
 
-            <Form.Item className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+            <Form.Item className="d-flex justify-content-center mb-3 mb-lg-4">
               <span>
                 <Button
                   htmlType="submit"
