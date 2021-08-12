@@ -210,7 +210,7 @@ const Login = () => {
                   placeholder="Enter your name"
                   // className={"error" && errors.name && touched.name }
                 />
-                {formik.errors.name ? (
+                {formik.errors.name && formik.touched.name ? (
                   <div
                     style={{
                       fontSize: "12px",
@@ -250,7 +250,7 @@ const Login = () => {
                   required
                   placeholder="Enter your password"
                 />
-                {formik.errors.password ? (
+                {formik.errors.password && formik.touched.password ? (
                   <div
                     style={{
                       fontSize: "12px",

@@ -225,7 +225,7 @@ const Signup = () => {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
-                {formik.errors.name ? (
+                {formik.errors.name && formik.touched.name ? (
                   <div
                     style={{
                       fontSize: "12px",
@@ -261,7 +261,7 @@ const Signup = () => {
                   onBlur={formik.handleBlur}
                   placeholder="Enter email id"
                 />
-                {formik.errors.email ? (
+                {formik.errors.email && formik.touched.email ? (
                   <div
                     style={{
                       fontSize: "12px",
@@ -316,7 +316,7 @@ const Signup = () => {
                   className="form-control"
                   placeholder="Choose birthdate"
                 />
-                {formik.errors.bDate ? (
+                {formik.errors.bDate && formik.touched.bDate ? (
                   <div
                     style={{
                       fontSize: "12px",
@@ -353,7 +353,7 @@ const Signup = () => {
                   onBlur={formik.handleBlur}
                   placeholder="Enter your password"
                 />
-                {formik.errors.password ? (
+                {formik.errors.password && formik.touched.password ? (
                   <div
                     style={{
                       fontSize: "12px",
@@ -408,7 +408,7 @@ const Signup = () => {
                   placeholder="Enter your password"
                 />
 
-                {formik.errors.confirm ? (
+                {formik.errors.confirm && formik.touched.confirm ? (
                   <div
                     style={{
                       fontSize: "12px",
